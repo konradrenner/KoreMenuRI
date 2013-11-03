@@ -4,16 +4,24 @@
  */
 package org.kore.menu.ri;
 
+import java.io.Serializable;
 import org.kore.menu.api.Namespace;
 
 /**
  *
  * @author Konrad Renner
  */
-public class NamespaceImpl implements Namespace {
+public class NamespaceImpl implements Namespace, Serializable {
+
+    private final String name;
+
+    public NamespaceImpl(String name) {
+        this.name = name;
+    }
+
 
     @Override
     public String getName() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.name;
     }
 }
