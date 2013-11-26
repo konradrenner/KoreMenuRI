@@ -4,6 +4,7 @@
  */
 package org.kore.menu.ri;
 
+import java.io.Serializable;
 import org.kore.menu.api.EntryUID;
 import org.kore.menu.api.Namespace;
 
@@ -11,7 +12,7 @@ import org.kore.menu.api.Namespace;
  *
  * @author Konrad Renner
  */
-public class EntryUIDImpl implements EntryUID {
+public class EntryUIDImpl implements EntryUID, Serializable {
 
     private final Namespace namespace;
     private final String id;
@@ -40,6 +41,9 @@ public class EntryUIDImpl implements EntryUID {
 
     @Override
     public int compareTo(EntryUID o) {
+        if (this.equals(o)) {
+            return 0;
+        }
         return getSortingKey().compareTo(o.getSortingKey());
     }
 
