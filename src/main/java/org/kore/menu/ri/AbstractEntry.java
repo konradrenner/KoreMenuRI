@@ -28,10 +28,12 @@ public abstract class AbstractEntry implements Entry, Serializable {
     private final EntryGroup children;
     private final Set<EntryTask> mappedTasks;
     private final String displayKey;
-    private final NavigationPath path;
+    private final String path;
+    private final String errorPath;
     private final Set<Authorization> auths;
+    private NavigationPath navpath;
 
-    public AbstractEntry(EntryUID uid, EntryUID parent, EntryGroup children, Set<EntryTask> mappedTasks, String displayKey, NavigationPath path, Set<Authorization> auth) {
+    public AbstractEntry(EntryUID uid, EntryUID parent, EntryGroup children, Set<EntryTask> mappedTasks, String displayKey, String path, String errorPath, Set<Authorization> auth) {
         Objects.requireNonNull(uid, "uid must not be null");
         Objects.requireNonNull(parent, "parent must not be null");
         Objects.requireNonNull(children, "children must not be null");
@@ -45,6 +47,7 @@ public abstract class AbstractEntry implements Entry, Serializable {
         this.mappedTasks = Collections.unmodifiableSet(mappedTasks);
         this.displayKey = displayKey;
         this.path = path;
+        this.errorPath = errorPath;
         this.auths = Collections.unmodifiableSet(auth);
     }
 
@@ -113,7 +116,10 @@ public abstract class AbstractEntry implements Entry, Serializable {
 
     @Override
     public NavigationPath getNavigationPath() {
-        return this.path;
+        if (this.navpath == null) {
+            this.navpath = new NavigationPathImpl(path, this, new ErrorPath(this.errorPath, this));
+        }
+        return this.navpath;
     }
 
     @Override
